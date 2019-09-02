@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+// Additional EF Dependencies
+using MyJukeBox.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace MyJukeBox
 {
     public class Startup
@@ -33,6 +37,10 @@ namespace MyJukeBox
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            var connection = @"Server=USER-PC\SQLEXPRESS;Database=MyJukeBox;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddDbContext<JukeBoxContext>
+                (options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
