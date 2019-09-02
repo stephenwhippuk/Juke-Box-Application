@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJukeBox", "MyJukeBox\MyJukeBox.csproj", "{042C3312-268D-46DC-9EF8-267162E7709B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{042C3312-268D-46DC-9EF8-267162E7709B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042C3312-268D-46DC-9EF8-267162E7709B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042C3312-268D-46DC-9EF8-267162E7709B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042C3312-268D-46DC-9EF8-267162E7709B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {194F50FA-81B5-43A6-8039-596B9342709C}
+	EndGlobalSection
+EndGlobal
