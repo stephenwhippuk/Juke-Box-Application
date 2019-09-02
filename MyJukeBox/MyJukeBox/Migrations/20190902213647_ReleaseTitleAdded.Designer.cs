@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyJukeBox.Models;
 
 namespace MyJukeBox.Migrations
 {
     [DbContext(typeof(JukeBoxContext))]
-    partial class JukeBoxContextModelSnapshot : ModelSnapshot
+    [Migration("20190902213647_ReleaseTitleAdded")]
+    partial class ReleaseTitleAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

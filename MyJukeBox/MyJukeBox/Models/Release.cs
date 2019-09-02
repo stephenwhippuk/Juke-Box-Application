@@ -10,6 +10,8 @@ namespace MyJukeBox.Models
     public class Release
     {
         public int ReleaseID { get; set; }
+
+        public string Title { get; set; }
         public DateTime releaseDate { get; set; }
         public ReleaseType releaseType { get; set; }
         public PerformanceTytpe performanceType { get; set; }
