@@ -1,0 +1,40 @@
+﻿@model MyJukeBox.ViewModels.AlbumTracks
+@{
+    ViewData["Title"] = "Album Tracks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Album Tracks</h1>
+
+<h2>@Model.Title</h2>
+<h2>@Model.ReleaseDate</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title </th>
+            <th>Artist</th>
+            <th>Description</th>
+            <th>Duration</th>
+        </tr>
+    <tbody>
+        @foreach (var item in Model.Tracks)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Artist)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
