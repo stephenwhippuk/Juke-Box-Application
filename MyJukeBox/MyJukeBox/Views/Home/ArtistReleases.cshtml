@@ -1,0 +1,29 @@
+﻿@model MyJukeBox.ViewModels.ArtistReleases
+@{
+    ViewData["Title"] = "ArtistReleases";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Releases by Artist</h1>
+
+<h2> @Model.Artist </h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Release Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var r in Model.Releases)
+        {
+            <tr>
+                <td>r.Title</td>
+                <td>r.ReleaseType</td>
+                <td>r.ReleaseDate.ToShortString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

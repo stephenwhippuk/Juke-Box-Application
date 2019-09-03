@@ -9,11 +9,27 @@ namespace MyJukeBox.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Artists",
+                columns: table => new
+                {
+                    ArtistID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Artists", x => x.ArtistID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Releases",
                 columns: table => new
                 {
                     ReleaseID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(nullable: true),
+                    ArtistID = table.Column<int>(nullable: false),
                     releaseDate = table.Column<DateTime>(nullable: false),
                     releaseType = table.Column<int>(nullable: false),
                     performanceType = table.Column<int>(nullable: false),
@@ -23,6 +39,12 @@ namespace MyJukeBox.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Releases", x => x.ReleaseID);
+                    table.ForeignKey(
+                        name: "FK_Releases_Artists_ArtistID",
+                        column: x => x.ArtistID,
+                        principalTable: "Artists",
+                        principalColumn: "ArtistID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,7 +53,7 @@ namespace MyJukeBox.Migrations
                 {
                     TrackID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Artist = table.Column<string>(nullable: true),
+                    ArtistID = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Duration = table.Column<float>(nullable: false),
@@ -42,12 +64,28 @@ namespace MyJukeBox.Migrations
                 {
                     table.PrimaryKey("PK_Tracks", x => x.TrackID);
                     table.ForeignKey(
+                        name: "FK_Tracks_Artists_ArtistID",
+                        column: x => x.ArtistID,
+                        principalTable: "Artists",
+                        principalColumn: "ArtistID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Tracks_Releases_ReleaseID",
                         column: x => x.ReleaseID,
                         principalTable: "Releases",
                         principalColumn: "ReleaseID",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Releases_ArtistID",
+                table: "Releases",
+                column: "ArtistID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tracks_ArtistID",
+                table: "Tracks",
+                column: "ArtistID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tracks_ReleaseID",
@@ -62,6 +100,9 @@ namespace MyJukeBox.Migrations
 
             migrationBuilder.DropTable(
                 name: "Releases");
+
+            migrationBuilder.DropTable(
+                name: "Artists");
         }
     }
 }

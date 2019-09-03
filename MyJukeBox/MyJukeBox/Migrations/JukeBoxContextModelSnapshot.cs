@@ -19,11 +19,28 @@ namespace MyJukeBox.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("MyJukeBox.Models.Artist", b =>
+                {
+                    b.Property<int>("ArtistID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("ArtistID");
+
+                    b.ToTable("Artists");
+                });
+
             modelBuilder.Entity("MyJukeBox.Models.Release", b =>
                 {
                     b.Property<int>("ReleaseID")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ArtistID");
 
                     b.Property<string>("CoverUrl");
 
@@ -39,6 +56,8 @@ namespace MyJukeBox.Migrations
 
                     b.HasKey("ReleaseID");
 
+                    b.HasIndex("ArtistID");
+
                     b.ToTable("Releases");
                 });
 
@@ -48,7 +67,7 @@ namespace MyJukeBox.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Artist");
+                    b.Property<int>("ArtistID");
 
                     b.Property<string>("Description");
 
@@ -62,13 +81,28 @@ namespace MyJukeBox.Migrations
 
                     b.HasKey("TrackID");
 
+                    b.HasIndex("ArtistID");
+
                     b.HasIndex("ReleaseID");
 
                     b.ToTable("Tracks");
                 });
 
+            modelBuilder.Entity("MyJukeBox.Models.Release", b =>
+                {
+                    b.HasOne("MyJukeBox.Models.Artist", "Artist")
+                        .WithMany()
+                        .HasForeignKey("ArtistID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyJukeBox.Models.Track", b =>
                 {
+                    b.HasOne("MyJukeBox.Models.Artist", "Artist")
+                        .WithMany()
+                        .HasForeignKey("ArtistID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("MyJukeBox.Models.Release")
                         .WithMany("Tracks")
                         .HasForeignKey("ReleaseID");

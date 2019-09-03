@@ -15,5 +15,7 @@ namespace MyJukeBox.Models
 
         public DbSet<Track> Tracks { get; set; }
         public DbSet<Release> Releases { get; set; }
+
+        public DbSet<Artist> Artists { get; set; }
     }
 }
