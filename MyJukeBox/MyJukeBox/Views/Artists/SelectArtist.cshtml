@@ -1,0 +1,36 @@
+﻿@model  MyJukeBox.ViewModels.SelectedArtist
+
+@*
+    //Partial View for Selecting a Single Artist from a list 
+    // TODO:
+    // 1)Add Pagination
+    // 2)Add First Letter Filter
+*@
+
+<script>
+    @* selection function, naming schema to protect against clashes between partial views etc*@
+    function SelectArtist_select(id, name) {
+        @Model.SelectedId = id;
+        @Model.SelectedName = name;
+    }
+</script>
+
+<h2>Artists</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Artists)
+        {
+            <tr>
+                <td>@item.ArtistID</td>
+                <td>@item.Name</td>
+                <td><input type="button" title="Select" value="@item.Name" id="SelectArtist-select-@item.ArtistID" onclick="SelectArtist_select(@item.ArtistID), @item.Name"/> </td>
+            </tr>
+        }
+    </tbody>
+</table>
