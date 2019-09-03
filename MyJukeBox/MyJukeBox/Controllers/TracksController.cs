@@ -21,7 +21,10 @@ namespace MyJukeBox.Controllers
         // GET: Tracks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tracks.ToListAsync());
+            // To DO: replce the lsit 
+
+            var jukeBoxContext = _context.Tracks.Include(t => t.Artist);
+            return View(await jukeBoxContext.ToListAsync());
         }
 
         // GET: Tracks/Details/5
@@ -33,6 +36,7 @@ namespace MyJukeBox.Controllers
             }
 
             var track = await _context.Tracks
+                .Include(t => t.Artist)
                 .FirstOrDefaultAsync(m => m.TrackID == id);
             if (track == null)
             {
@@ -45,6 +49,12 @@ namespace MyJukeBox.Controllers
         // GET: Tracks/Create
         public IActionResult Create()
         {
+            // TODO: Change list of ID to Names
+
+            var mylist = from artist in _context.Artists select artist.Name;
+
+            ViewData["Artists"] = mylist;
+            //ViewData["ArtistID"] = new SelectList(_context.Artists, "ArtistID", "ArtistID");
             return View();
         }
 
@@ -53,14 +63,32 @@ namespace MyJukeBox.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrackID,Artist,Title,Description,Duration,ImageURL")] Track track)
+
+        //public async Task<IActionResult> Create([Bind("TrackID, ArtistID, Title,Description,Duration,ImageURL")] Track track)
+        public async Task<IActionResult> Create(string ArtistID, string Title, string Description, float Duration, string ImageURL)
         {
+            Track track = new Track();
+
+            var ids = from artist in _context.Artists where artist.Name == ArtistID select artist.ArtistID;
+
+            track.ArtistID = ids.First(); // should only be the one
+            //track.TrackID = TrackID;
+            track.Description = Description;
+            track.Duration = Duration;
+            track.Title = Title;
+            track.ImageURL = ImageURL;
+
             if (ModelState.IsValid)
             {
                 _context.Add(track);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            var mylist = from artist in _context.Artists select artist;
+            ViewData["Artists"] = mylist;
+            //ViewData["ArtistID"] = new SelectList(mylist, "Name", "Artist");
+
+            //ViewData["ArtistID"] = new SelectList(_context.Artists, "ArtistID", "ArtistID", track.ArtistID);
             return View(track);
         }
 
@@ -77,6 +105,20 @@ namespace MyJukeBox.Controllers
             {
                 return NotFound();
             }
+
+            // get list of artist names
+            var mylist = from a in _context.Artists select a.Name;
+
+            ViewData["Artists"] = mylist;
+
+            // find the selected artist name 
+            var artist = (string) (from a in _context.Artists where a.ArtistID == track.ArtistID select a.Name).First();
+
+            // set up view data
+            ViewData["Artist"] = artist;
+            ViewData["ArtistID"] = mylist;
+
+            //ViewData["ArtistID"] = new SelectList(_context.Artists, "ArtistID", "ArtistID", track.ArtistID);
             return View(track);
         }
 
@@ -85,8 +127,18 @@ namespace MyJukeBox.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TrackID,Artist,Title,Description,Duration,ImageURL")] Track track)
+        public async Task<IActionResult> Edit(int id, string Artist, string Title,string Description,float Duration,string ImageURL)
+        //public async Task<IActionResult> Edit(int id, [Bind("TrackID,ArtistID,Title,Description,Duration,ImageURL")] Track track)
         {
+            Track track = new Track();
+            track.TrackID = id;
+            var aid = (from ar in _context.Artists where ar.Name == Artist select ar.ArtistID).First();
+
+            track.ArtistID = aid;
+            track.Title = Title;
+            track.Description = Description;
+            track.Duration = Duration;
+            track.ImageURL = ImageURL;
             if (id != track.TrackID)
             {
                 return NotFound();
@@ -112,6 +164,19 @@ namespace MyJukeBox.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            var mylist = from a in _context.Artists select a.Name;
+
+            ViewData["Artists"] = mylist;
+
+            // find the selected artist name 
+            var artist = (string)(from a in _context.Artists where a.ArtistID == track.ArtistID select a.Name).First();
+
+            // set up view data
+            ViewData["Artist"] = artist;
+            ViewData["ArtistID"] = mylist;
+
+            //ViewData["ArtistID"] = new SelectList(_context.Artists, "ArtistID", "ArtistID", track.ArtistID);
             return View(track);
         }
 
@@ -124,6 +189,7 @@ namespace MyJukeBox.Controllers
             }
 
             var track = await _context.Tracks
+                .Include(t => t.Artist)
                 .FirstOrDefaultAsync(m => m.TrackID == id);
             if (track == null)
             {
